@@ -11,7 +11,7 @@ You are executing a full feature development lifecycle. This is an interactive, 
 - You MUST NOT skip any phase unless the user explicitly asks to skip it
 - If anything fails, diagnose the issue and ask the user how to proceed
 - **Sub-agents**: NEVER use `run_in_background: true`. All sub-agents run in foreground.
-- **Model selection**: Use ROUTING_TABLE[agent_name] to determine the model for each cognitive phase sub-agent spawn. Mechanical phases (preflight-build-check, secret-exposure-scanner, gh-cmt-pr) always use Haiku. Never pass SELECTED_MODEL — use the routing table.
+- **Model selection**: Use ROUTING_TABLE[agent_name] to determine the model for every sub-agent spawn — including preflight-build-check, secret-exposure-scanner, and gh-cmt-pr. The model-advisor sets the model for all phases. Never pass SELECTED_MODEL — always use the routing table.
 - **Confidence evaluation**: After every cognitive phase sub-agent returns, spawn `confidence-evaluator` (model: haiku) with the original prompt and the agent's response. If score < 70, escalate one tier and re-spawn the phase agent. Log every attempt to `.claude/data/routing-log.jsonl`.
 - **Phase transitions**: Use `TaskUpdate` to set the current phase to `completed`, then set the next phase to `in_progress`.
 - **Early stop**: If the workflow terminates before completing all phases, mark all remaining `pending` phase tasks as `deleted`.
@@ -319,13 +319,13 @@ Upgrade STORY_COMPLEXITY one tier (LOW→MEDIUM, MEDIUM→HIGH) if ANY of the fo
 
 If upgrade triggered:
   - Update STORY_COMPLEXITY
-  - Re-read ROUTING_TABLE entries for phases 5–9 using new complexity from model-routing.json
+  - Upgrade ROUTING_TABLE entries for phases 5–9 by one model tier (haiku→sonnet, sonnet→opus). Do not downgrade any entry that is already at opus.
   - Output:
     ```
     ⚡ Codebase scope larger than story suggested.
        Signal(s): <list which signals triggered>
        Upgrading complexity: <OLD> → <NEW>
-       Phases 5–9 routing updated.
+       Phases 5–9 routing upgraded one tier.
     ```
 
 If no upgrade triggered:
@@ -556,15 +556,15 @@ After all phases are complete, display:
 
 | Phase | Model Used | Confidence | Escalated |
 |-------|-----------|-----------|-----------|
-| Phase 3: Preflight | haiku (mechanical) | — | — |
+| Phase 3: Preflight | <ROUTING_TABLE["preflight-build-check"]> | — | — |
 | Phase 4: Planning | <from ROUTING_LOG> | <score>/100 | <yes/no> |
 | Phase 5: Implementation | <from ROUTING_LOG> | <score>/100 | <yes/no> |
-| Phase 6: Secret Scan | haiku (mechanical) | — | — |
+| Phase 6: Secret Scan | <ROUTING_TABLE["secret-exposure-scanner"]> | — | — |
 | Phase 7a: Tests | <from ROUTING_LOG> | <score>/100 | no |
 | Phase 7b: Security | <from ROUTING_LOG> | <score>/100 | no |
 | Phase 8: Build Verify | <from ROUTING_LOG> | <score>/100 | — |
 | Phase 9: Code Review | <from ROUTING_LOG> | — | — |
-| Phase 10: Commit/PR | haiku (mechanical) | — | — |
+| Phase 10: Commit/PR | <ROUTING_TABLE["gh-cmt-pr"]> | — | — |
 
 ---
 
