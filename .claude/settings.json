@@ -45,10 +45,13 @@
       "mcp__github__issue_write",
       "WebSearch",
       "Skill(task)",
+      "Skill(task-v2)",
+      "Skill(advise-model)",
       "Skill(gh-cmt-pr)",
       "Skill(task-review)",
       "Skill(pr-review-fix)",
-      "Skill(repo-secret-audit)"
+      "Skill(repo-secret-audit)",
+      "Skill(suggest-model)"
     ]
   },
   "hooks": {
