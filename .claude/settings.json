@@ -1,0 +1,75 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git rebase:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git switch:*)",
+      "Bash(git stash:*)",
+      "Bash(jar tf:*)",
+      "Bash(java:*)",
+      "Bash(wc:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(./gradlew:*)",
+      "Bash(powershell:*)",
+      "Bash(C:\\tools\\trufflehog.exe:*)",
+      "mcp__tr-code-scan-mcp__scan_files",
+      "mcp__tr-code-scan-mcp__scan_code",
+      "mcp__ado__wit_get_work_item",
+      "mcp__ado__core_list_projects",
+      "mcp__github__pull_request_read",
+      "mcp__github__get_me",
+      "mcp__github__list_pull_requests",
+      "mcp__github__create_pull_request",
+      "mcp__github__issue_write",
+      "WebSearch",
+      "Skill(task)",
+      "Skill(gh-cmt-pr)",
+      "Skill(task-review)",
+      "Skill(pr-review-fix)",
+      "Skill(repo-secret-audit)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__tr-code-scan-mcp__scan_project",
+        "hooks": [{ "type": "command", "command": "python .claude/hooks/block-scan-project.py" }]
+      },
+{
+        "matcher": "Write|Edit",
+        "hooks": [{ "type": "command", "command": "node .claude/hooks/secret_scan.js" }]
+      }
+    ],
+    "PostToolUse": [],
+    "Notification": []
+  },
+  "enabledMcpjsonServers": [
+    "tr-code-scan-mcp",
+    "github",
+    "ado"
+  ],
+  "disabledMcpjsonServers": [
+  ]
+}
