@@ -61,12 +61,11 @@ The central innovation is **Intelligent Model Routing** — the system does not 
 | [TruffleHog](https://github.com/trufflesecurity/trufflehog/releases) | Secret detection in pre-commit and Phase 6 | Recommended |
 | Git | Version control | Required |
 
-### Step 1 — Clone and switch to the feature branch
+### Step 1 — Clone the repo
 
 ```bash
 git clone <repo-url>
 cd automatedpr
-git checkout feature/intelligent-model-routing
 ```
 
 ### Step 2 — Run the setup script
@@ -75,18 +74,29 @@ git checkout feature/intelligent-model-routing
 bash .claude/scripts/setup.sh
 ```
 
-This single script does everything:
+By default this installs everything. You can also choose what to install:
+
+```bash
+bash .claude/scripts/setup.sh --interactive      # menu to pick what you want
+bash .claude/scripts/setup.sh --only-hook        # install ONLY the git pre-commit scanner
+bash .claude/scripts/setup.sh --skip-agents      # skip agents
+bash .claude/scripts/setup.sh --skip-skills      # skip skills
+bash .claude/scripts/setup.sh --skip-global-hook # skip git pre-commit hook
+```
+
+The script does the following:
 
 ```
-[0/7] Checks prerequisites (Node, Python, TruffleHog, Git)
-[1/7] Creates ~/.claude/hooks/, ~/.claude/agents/, ~/.claude/skills/, ~/.git-hooks/
-[2/7] Copies hook scripts → ~/.claude/hooks/
-[3/7] Copies all agents  → ~/.claude/agents/
-[4/7] Copies all skills  → ~/.claude/skills/
-[5/7] Wires hooks into   → ~/.claude/settings.json
-[6/7] Installs global git pre-commit hook → ~/.git-hooks/pre-commit
-      + sets git config --global core.hooksPath
-[7/7] Checks environment variables
+[0] Checks prerequisites (Node, Python, TruffleHog, Git)
+[1] Creates ~/.claude/hooks/, ~/.claude/agents/, ~/.claude/skills/, ~/.git-hooks/
+[2] Copies hook scripts → ~/.claude/hooks/
+[3] Copies all agents  → ~/.claude/agents/
+[4] Copies all skills  → ~/.claude/skills/
+[5] Merges hooks into  → ~/.claude/settings.json (never overwrites existing config)
+[5b] Installs routing config → ~/.claude/config/
+[6] Installs global git pre-commit hook → ~/.git-hooks/pre-commit
+    (respects existing core.hooksPath if already set)
+[7] Checks environment variables
 ```
 
 ### Step 3 — Set environment variables
@@ -116,10 +126,10 @@ All skills, agents, and hooks are now active globally. No setup needed per proje
 
 ### Re-running after updates
 
-Pull the latest from `feature/intelligent-model-routing` and re-run the same script — it overwrites all installed files with the latest versions:
+Pull the latest from `master` and re-run the same script — it updates all installed files with the latest versions:
 
 ```bash
-git pull
+git pull origin master
 bash .claude/scripts/setup.sh
 ```
 
@@ -131,7 +141,8 @@ bash .claude/scripts/setup.sh
 ~/.claude/
 ├── hooks/
 │   ├── secret_scan.js           ← fires on every Write/Edit inside Claude
-│   └── block-scan-project.py   ← blocks scan_project MCP tool
+│   ├── block-scan-project.py   ← blocks scan_project MCP tool
+│   └── block-git-add.py        ← blocks broad git add . / git add -A
 ├── agents/
 │   ├── implementation-planner.md
 │   ├── implementation-executor.md
