@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "tr-code-scan-mcp": {
+      "type": "stdio",
+      "command": "${TR_CODE_SCAN_BINARY}",
+      "args": ["mcp-server"],
+      "timeout": 3600
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      }
+    },
+    "ado": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@azure-devops/mcp",
+        "TR-Legal-Cobalt",
+        "--authentication",
+        "envvar"
+      ],
+      "env": {
+        "ADO_MCP_AUTH_TOKEN": "${ADO_MCP_AUTH_TOKEN}"
+      }
+    }
+  }
+}
