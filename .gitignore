@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.coverage
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+venv/
+.claude/settings.local.json

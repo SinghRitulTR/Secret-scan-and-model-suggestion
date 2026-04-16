@@ -1,0 +1,45 @@
+{
+  "description": "Complexity-based starting model presets per cognitive phase. Routing system may upgrade above these. Never downgrades below phase-floors.json.",
+  "version": "1.0",
+  "routing": {
+    "implementation-planner": {
+      "LOW":          "sonnet",
+      "MEDIUM":       "sonnet",
+      "HIGH":         "opus"
+    },
+    "implementation-executor": {
+      "LOW":          "haiku",
+      "MEDIUM":       "sonnet",
+      "HIGH":         "opus"
+    },
+    "unit-test-generator": {
+      "LOW":          "sonnet",
+      "MEDIUM":       "sonnet",
+      "HIGH":         "sonnet"
+    },
+    "security-scanner": {
+      "LOW":          "sonnet",
+      "MEDIUM":       "sonnet",
+      "HIGH":         "sonnet"
+    },
+    "build-verifier": {
+      "LOW":          "haiku",
+      "MEDIUM":       "haiku",
+      "HIGH":         "sonnet"
+    },
+    "code-reviewer": {
+      "LOW":          "sonnet",
+      "MEDIUM":       "sonnet",
+      "HIGH":         "opus"
+    }
+  },
+  "confidence_threshold": 70,
+  "learning": {
+    "cold_start_threshold":   20,
+    "mature_threshold":       100,
+    "min_success_rate":       0.75,
+    "min_confidence_score":   70,
+    "recency_window":         10,
+    "recency_weight":         2.0
+  }
+}

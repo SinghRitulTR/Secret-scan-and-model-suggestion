@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where python:*)",
+      "Bash(where python3:*)",
+      "Bash(where py:*)",
+      "Bash(/c/Users/6138183/AppData/Local/Programs/Python/Python312/python.exe -m pytest tests/auth/test_user_auth_service.py::test_authenticate_correct_password_no_totp -v --tb=short)",
+      "Bash(git rm:*)",
+      "Bash(bash .claude/scripts/setup.sh)",
+      "Bash(rm /c/tr-git-projects/automatedpr/reverse_string.py)",
+      "Bash(rm /c/tr-git-projects/automatedpr/src/calculator.py)",
+      "Bash(rm /c/tr-git-projects/automatedpr/.coverage)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}

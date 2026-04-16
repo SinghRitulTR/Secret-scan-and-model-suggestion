@@ -1,0 +1,28 @@
+repos:
+  # TruffleHog — verified secret detection
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.94.0
+    hooks:
+      - id: trufflehog
+        name: TruffleHog Secret Scan
+        args: ["filesystem", ".", "--fail", "--only-verified"]
+        pass_filenames: false
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: detect-private-key
+        name: Detect Private Keys
+      - id: check-added-large-files
+        name: Block Large Files
+        args: ["--maxkb=1000"]
+      - id: no-commit-to-branch
+        name: Block Direct Commits to Main
+        args: ["--branch", "main", "--branch", "master"]
+      - id: check-merge-conflict
+        name: Check for Merge Conflict Markers
+      - id: end-of-file-fixer
+        name: Fix End of File
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
