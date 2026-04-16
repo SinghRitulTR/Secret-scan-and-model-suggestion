@@ -1,0 +1,21 @@
+{
+  "description": "Minimum safe model per cognitive phase. Never violated by routing system.",
+  "floors": {
+    "implementation-planner":  "sonnet",
+    "implementation-executor": { "LOW": "haiku", "MEDIUM": "sonnet", "HIGH": "sonnet" },
+    "unit-test-generator":     "sonnet",
+    "security-scanner":        "sonnet",
+    "build-verifier":          "haiku",
+    "code-reviewer":           "sonnet"
+  },
+  "mechanical_phases": [
+    "preflight-build-check",
+    "secret-exposure-scanner",
+    "gh-cmt-pr"
+  ],
+  "model_ids": {
+    "haiku":  "claude-haiku-4-5-20251001",
+    "sonnet": "claude-sonnet-4-6",
+    "opus":   "claude-opus-4-6"
+  }
+}
